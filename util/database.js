@@ -1,17 +1,30 @@
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+// util/database.js
+const { MongoClient } = require('mongodb');
 
-const mongoConnect = callback => {
+let _db;
+
+const mongoConnect = (callback) => {
   MongoClient.connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/test?retryWrites=true'
+    'mongodb://localhost:27017/shop',
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
   )
     .then(client => {
-      console.log('Connected!');
-      callback(client);
+      console.log('Connected to MongoDB');
+      _db = client.db();
+      callback();
     })
     .catch(err => {
-      console.log(err);
+      console.error('MongoDB Connection Error:', err);
+      throw err;
     });
 };
 
-module.exports = mongoConnect;
+const getDb = () => {
+  if (_db) return _db;
+  throw 'No database found!';
+};
+
+module.exports = { mongoConnect, getDb };

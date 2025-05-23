@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database');
+const { mongoConnect } = require('./util/database');
 
 const app = express();
 
@@ -24,6 +24,7 @@ app.use((req, res, next) => {
   //     next();
   //   })
   //   .catch(err => console.log(err));
+  next();
 });
 
 // app.use('/admin', adminRoutes);
@@ -31,7 +32,9 @@ app.use((req, res, next) => {
 
 app.use(errorController.get404);
 
-mongoConnect(client => {
-  console.log(client);
-  app.listen(3000);
+mongoConnect(() => {
+  console.log('Server is connected to database');
+  app.listen(3000, () => {
+    console.log('Server running on port 3000');
+  });
 });
