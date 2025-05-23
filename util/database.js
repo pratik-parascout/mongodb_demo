@@ -5,11 +5,15 @@ let _db;
 
 const mongoConnect = (callback) => {
   MongoClient.connect(
+<<<<<<< HEAD
     'mongodb://localhost:27017/shop',
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }
+=======
+    'uri'
+>>>>>>> a948f6f5b938c14e7869c59a7e70a5b918c76767
   )
     .then(client => {
       console.log('Connected to MongoDB');
